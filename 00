@@ -1,0 +1,13 @@
+# package.json "type": "module",
+
+# npm i -D nodemon
+"scripts": {
+    "dev":"nodemon backend/src/index.js"
+  },
+
+# npm i -D prettier
+add .prettierrc file 
+add .prettierignore file 
+
+
+# npm i mongoose express dotenv
