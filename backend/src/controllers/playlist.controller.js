@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { Playlist} from "../models/playlist.model.js";
+import { Playlist} from "../models/playlist.model.js"; 
 import {ApiError} from "../utils/apiError.js"
 import {ApiResponse} from "../utils/apiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
-import { Tweet } from "../models/tweet.model.js";
+import { Video } from "../models/video.model.js";
 
 // // create playlist
 const createPlaylist = asyncHandler(async(req,res) => {
@@ -66,12 +66,75 @@ const getPlaylistById = asyncHandler(async(req, res) =>{
 
 // //
 const addVideoToPlaylist = asyncHandler(async(req, res) =>{
-    const {playlistId, videoId} = req.params
+    const {playlistId, videoId} = req.params;
+
+    // playlist exists or not
+    const playlist= await Playlist.findOne(
+        {
+            _id:playlistId,
+            owner:req.user._id
+        }
+    );
+    if(!playlist){
+        throw new ApiError(404, "Playlist doesn't exists")
+    }
+
+    // video exists or not
+    const video = await Video.findById(videoId);
+    if(!video){
+        throw new ApiError(404, "Video not found")
+    }
+
+    const updatePlaylist = await Playlist.findByIdAndUpdate(
+        {
+            _id: playlistId,
+            owner: req.user._id
+        },
+        {
+            $addToSet:{
+                videos:{videoId}
+            }
+        },
+        {new:true}
+    )
+
+    if(!updatePlaylist){
+        throw new ApiError(500, "Error while adding video")
+    }
+    return res
+    .status(201)
+    .json(200, updatePlaylist, "Video added successfully")
+    
 })
 
 // // 
 const deleteVideoFromPlaylist = asyncHandler(async(req, res) =>{
     const {playlistId,videoId} = req.params;
+
+    const playlist = await Playlist.findById(playlistId);
+    if(!playlist){
+        throw new ApiError(404, "Playlist not found");
+    }
+    const video = await Video.findById(videoId);
+    if(!video){
+        throw new ApiError(404, "Video not found");
+    }
+
+    const updatePlaylist =  await Playlist.findByIdAndUpdate(
+        playlistId,
+        {
+            $pull:{
+                videos:videoId
+            }
+        },
+        {new :true}
+    ).populate("videos");
+    if(!updatePlaylist){
+        throw new ApiError(404, "Unable to delete video")
+    }
+    return res
+    .status(201)
+    .json(200, updatePlaylist, "Video deleted successfully")
 })
 
 // // const delete playlist
@@ -130,6 +193,8 @@ const updatePlaylist = asyncHandler(async(req,res) =>{
 export {
     createPlaylist,
     getUserPlaylists,
+    addVideoToPlaylist,
+    deleteVideoFromPlaylist,
     getPlaylistById,
     deletePlaylist,
     updatePlaylist
