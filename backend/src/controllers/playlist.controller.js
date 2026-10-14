@@ -85,25 +85,25 @@ const addVideoToPlaylist = asyncHandler(async(req, res) =>{
         throw new ApiError(404, "Video not found")
     }
 
-    const updatePlaylist = await Playlist.findByIdAndUpdate(
+    const updatedPlaylist = await Playlist.findByIdAndUpdate(
         {
             _id: playlistId,
             owner: req.user._id
         },
         {
             $addToSet:{
-                videos:{videoId}
+                videos:videoId
             }
         },
         {new:true}
     )
 
-    if(!updatePlaylist){
+    if(!updatedPlaylist){
         throw new ApiError(500, "Error while adding video")
     }
     return res
     .status(201)
-    .json(200, updatePlaylist, "Video added successfully")
+    .json(200, updatedPlaylist, "Video added successfully")
     
 })
 
@@ -156,6 +156,7 @@ const deletePlaylist = asyncHandler(async(req, res) =>{
     )
 })
 
+// update playlist
 const updatePlaylist = asyncHandler(async(req,res) =>{
     const {playlistId} = req.params
     const {name, description} = req. body
