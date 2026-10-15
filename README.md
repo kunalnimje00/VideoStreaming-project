@@ -1,92 +1,173 @@
-# Video Streaming Platform Backend
+# Backend JS - Video Streaming Platform
 
-This is a backend-first project for a video streaming platform. I am currently developing the server-side part of the application, and in the future I plan to add a React frontend on top of this API.
-
-## Project Status
-
-- In progress
-- Backend development is active
-- Frontend is not added yet
-- The project is not complete and is still evolving
-
-## Project Goal
-
-The main goal is to build a scalable backend for a video streaming platform that can later support a modern frontend built with React.
+This project is a backend-first video streaming and social media platform built with Node.js, Express.js, and MongoDB. The API currently supports user authentication, video management, playlists, and tweet functionality, with a backend foundation for likes, subscriptions, and community features.
 
 ## Tech Stack
 
 - Node.js
 - Express.js
-- MongoDB with Mongoose
+- MongoDB + Mongoose
 - JWT authentication
 - Multer for file uploads
 - Cloudinary for media storage
-- Cookie-based auth handling
-- CORS support for frontend integration
+- cookie-parser for cookie-based auth
+- CORS for frontend integration
 
-## Current Features
+## Project Status
 
-The backend already includes the foundation for:
+- Active backend development
+- Core API modules implemented
+- Frontend not yet added
+- Some advanced social features are still being developed
 
-- User registration and login
-- JWT access and refresh token generation
-- Protected routes using middleware
-- User profile and account management
-- Avatar and cover image uploads
-- Playlist support
-- Tweet-related backend modules
-- Basic API structure for a social/video platform
+## Features Implemented
 
-## Planned Features
+### Authentication and Users
 
-This project is intended to grow into a complete video platform with features such as:
+- User registration
+- Login and logout
+- Access token refresh flow
+- Password change
+- Current user retrieval
+- Profile updates
+- Avatar and cover image upload
+- Channel/profile lookup by username
+- Watch history tracking
 
-- Video upload and metadata handling
-- Video streaming APIs
-- Watch history
-- Likes and comments
-- User subscriptions and channels
-- Playlists and watch later functionality
-- Search and discovery
-- React frontend integration later
-- Admin features in future iterations
+### Video Features
 
-## Frontend Plan
+- Publish video with thumbnail upload
+- Get all videos
+- Get video by ID
+- Update video details
+- Delete video
+- Toggle publish status
 
-The backend is being built first so that the app can later connect to a React frontend. Once the API is stable, I will add a client-side frontend with features like:
+### Playlist Features
 
-- User authentication pages
-- Video dashboard
-- Channel/profile pages
-- Video player UI
-- Playlist UI
-- Responsive design
+- Create playlist
+- Get user playlists
+- Get playlist by ID
+- Add video to playlist
+- Remove video from playlist
+- Update playlist
+- Delete playlist
+
+### Tweet Features
+
+- Create tweet
+- Get all tweets
+- Get user tweet list
+- Update tweet
+- Delete tweet
+
+### Social Features in Progress
+
+- Like controller for videos, comments, and tweets
+- Comment tracking
+- Subscription management models
+- Additional social platform functionality
 
 ## Project Structure
 
 ```bash
-backend/
-  src/
-    app.js
-    index.js
-    controllers/
-    routes/
-    models/
-    middlewares/
-    db/
-    utils/
+.
+├── backend/
+│   └── src/
+│       ├── app.js
+│       ├── index.js
+│       ├── constants.js
+│       ├── controllers/
+│       │   ├── like.controller.js
+│       │   ├── playlist.controller.js
+│       │   ├── tweet.controller.js
+│       │   ├── user.controller.js
+│       │   └── video.controller.js
+│       ├── db/
+│       │   └── index.js
+│       ├── middlewares/
+│       │   ├── auth.middleware.js
+│       │   └── multer.middleware.js
+│       ├── models/
+│       │   ├── comment.model.js
+│       │   ├── like.model.js
+│       │   ├── playlist.model.js
+│       │   ├── subscription.model.js
+│       │   ├── tweet.model.js
+│       │   ├── user.model.js
+│       │   └── video.model.js
+│       ├── routes/
+│       │   ├── playlist.routes.js
+│       │   ├── tweet.routes.js
+│       │   ├── user.routes.js
+│       │   └── video.routes.js
+│       └── utils/
+│           ├── apiError.js
+│           ├── apiResponse.js
+│           ├── asyncHandler.js
+│           └── cloudinary.js
+├── .env
+├── .gitignore
+├── package.json
+├── package-lock.json
+├── README.md
+└── node_modules/
 ```
 
-## Getting Started
+## API Routes
 
-1. Clone the repository
-2. Install dependencies:
+### User Routes
 
-```bash
-npm install
+```text
+POST /api/v1/users/register
+POST /api/v1/users/login
+POST /api/v1/users/logout
+POST /api/v1/users/refresh-token
+POST /api/v1/users/change-password
+GET /api/v1/users/current-user
+PATCH /api/v1/users/update-account
+PATCH /api/v1/users/avatar
+PATCH /api/v1/users/cover-image
+GET /api/v1/users/c/:username
+GET /api/v1/users/history
 ```
 
-3. Create a `.env` file in the project root and add the required environment variables:
+### Video Routes
+
+```text
+GET /api/v1/video/
+POST /api/v1/video/publish
+GET /api/v1/video/getById/:videoId
+PATCH /api/v1/video/update/:videoId
+DELETE /api/v1/video/delete/:videoId
+PATCH /api/v1/video/togglePublish/:videoId
+```
+
+### Playlist Routes
+
+```text
+POST /api/v1/playlist/create
+GET /api/v1/playlist/user/:userId
+GET /api/v1/playlist/getById/:playlistId
+PATCH /api/v1/playlist/add/:playlistId/:videoId
+PATCH /api/v1/playlist/deletevideo/:playlistId/:videoId
+PATCH /api/v1/playlist/update/:playlistId
+DELETE /api/v1/playlist/delete/:playlistId
+```
+
+### Tweet Routes
+
+```text
+POST /api/v1/tweets/createTweet
+GET /api/v1/tweets/
+GET /api/v1/tweets/user/:userId
+PATCH /api/v1/tweets/:tweetId
+DELETE /api/v1/tweets/:tweetId
+```
+
+## Environment Variables
+
+Create a `.env` file in the project root with the following values:
 
 ```env
 PORT=8000
@@ -101,27 +182,26 @@ CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-4. Run the server in development mode:
+## Getting Started
+
+1. Clone the repo
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Add environment variables in a `.env` file
+4. Start the development server:
 
 ```bash
 npm run dev
 ```
 
-## Example API Routes
-
-```text
-/api/v1/users/register
-/api/v1/users/login
-/api/v1/users/logout
-/api/v1/users/current-user
-/api/v1/playlist/create
-/api/v1/playlist/user/:userId
-```
-
 ## Notes
 
-This is a personal learning and development project. The backend is being built step by step, and the application is not yet complete. In the future, I plan to add a React frontend to make the platform fully usable from the client side.
+This project is a learning-focused backend application for building a modern video platform. It is still evolving, and some modules are being refined as the app grows.
 
 ## License
 
-This project is currently for personal learning and development purposes.
+This project is for personal learning and development purposes.
