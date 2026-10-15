@@ -15,7 +15,9 @@ const getVideoComments = asyncHandler(async(req , res) =>{
         throw new ApiError(401, "Unauthorised access")
     }
 
+    const { page = 1, limit = 10 } = req.query;
     const pageNumber = Math.max(1, Number(page));
+    const limitNumber = Math.max(1, Number(limit));
     const sort = {};
     sort.createdAt = -1;
 
