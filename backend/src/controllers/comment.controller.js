@@ -35,7 +35,6 @@ const getVideoComments = asyncHandler(async(req , res) =>{
     return res
     .status(200)
     .json(new ApiResponse(200, comments ,"Video comments fetched successfully"))
-
 })
 
 const addComment = asyncHandler(async (req, res) => {
@@ -67,7 +66,7 @@ const addComment = asyncHandler(async (req, res) => {
 
 const updateComment = asyncHandler(async (req,res) =>{
     const {content} = req.body
-    const {commentId} = req.parms
+    const {commentId} = req.params
 
     if(!isValidObjectId(commentId)){
         throw new ApiError(400, "Invalid commentId")
@@ -100,16 +99,19 @@ const updateComment = asyncHandler(async (req,res) =>{
 
 
 const deleteComment = asyncHandler(async(req, res) =>{
-    const {commentId} = req.parms
+    const {commentId} = req.params
 
     if(!isValidObjectId(commentId)){
         throw new ApiError(400, "Invalid commentId")
     }
+    const a=await Comment.findById(commentId);
+
+    console.log(a);
 
     const comment = await Comment.findOneAndDelete(
         {
             _id:commentId,
-            owner:req.user.Id
+            owner:req.user._id
         }
     )
     if(!comment){
