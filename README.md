@@ -69,7 +69,9 @@ This project is a backend-first video streaming and social media platform built 
 
 ### Other Social Features
 
-- Subscription model is present; subscription API routes are not yet implemented
+- Toggle subscriptions to channels
+- Get a channel's subscribers
+- Get the authenticated user's subscribed channels
 
 ## Project Structure
 
@@ -84,6 +86,7 @@ This project is a backend-first video streaming and social media platform built 
 │       │   ├── comment.controller.js
 │       │   ├── like.controller.js
 │       │   ├── playlist.controller.js
+│       │   ├── subscription.controller.js
 │       │   ├── tweet.controller.js
 │       │   ├── user.controller.js
 │       │   └── video.controller.js
@@ -104,6 +107,7 @@ This project is a backend-first video streaming and social media platform built 
 │       │   ├── comment.route.js
 │       │   ├── like.routes.js
 │       │   ├── playlist.routes.js
+│       │   ├── subscription.routes.js
 │       │   ├── tweet.routes.js
 │       │   ├── user.routes.js
 │       │   └── video.routes.js
@@ -190,6 +194,16 @@ GET /api/v1/like/liked-videos
 ```
 
 All comment and like routes require authentication. Like POST endpoints toggle the current user's like on or off.
+
+### Subscription Routes
+
+```text
+POST /api/v1/subscription/subscribe/:channelId
+GET /api/v1/subscription/subscribers/:channelId
+GET /api/v1/subscription/channels
+```
+
+All subscription routes require authentication. The subscribe POST endpoint toggles the current user's subscription to a channel.
 
 ## Environment Variables
 
