@@ -73,6 +73,11 @@ This project is a backend-first video streaming and social media platform built 
 - Get a channel's subscribers
 - Get the authenticated user's subscribed channels
 
+### Dashboard Features
+
+- Get the authenticated channel's videos
+- Get channel statistics for videos, views, likes, and subscribers
+
 ## Project Structure
 
 ```bash
@@ -86,6 +91,7 @@ This project is a backend-first video streaming and social media platform built 
 │       │   ├── comment.controller.js
 │       │   ├── like.controller.js
 │       │   ├── playlist.controller.js
+│       │   ├── dashboard.controller.js
 │       │   ├── subscription.controller.js
 │       │   ├── tweet.controller.js
 │       │   ├── user.controller.js
@@ -105,6 +111,7 @@ This project is a backend-first video streaming and social media platform built 
 │       │   └── video.model.js
 │       ├── routes/
 │       │   ├── comment.route.js
+│       │   ├── dashboard.routes.js
 │       │   ├── like.routes.js
 │       │   ├── playlist.routes.js
 │       │   ├── subscription.routes.js
@@ -204,6 +211,15 @@ GET /api/v1/subscription/channels
 ```
 
 All subscription routes require authentication. The subscribe POST endpoint toggles the current user's subscription to a channel.
+
+### Dashboard Routes
+
+```text
+GET /api/v1/dashboard/channel-videos
+GET /api/v1/dashboard/channel-stats
+```
+
+Both dashboard routes require authentication. The channel videos endpoint accepts optional `page` and `limit` query parameters.
 
 ## Environment Variables
 
