@@ -26,5 +26,4 @@ used in schema for pagination here for video history
 
 
 # ##################################
-comment other routes need to check
 like all routes need to check

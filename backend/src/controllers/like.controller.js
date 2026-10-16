@@ -96,16 +96,16 @@ const toggleTweetLike = asyncHandler(async(req, res) => {
 })
 
 const getLikedVideos = asyncHandler(async(req, res) => {
-    const {page = 1, limit = 10} = req.query
     const user = req.user?._id
     if(!user){
         throw new ApiError(401, "Unauthorised access")
     }
 
+    const { page = 1, limit = 10 } = req.query;
     const pageNumber = Math.max(1, Number(page));
+    const limitNumber = Math.max(1, Number(limit));
     const sort = {};
     sort.createdAt = -1;
-    const limitNumber = Math.max(1, Number(limit));
 
     const likedVideos = await Like.find(
         {

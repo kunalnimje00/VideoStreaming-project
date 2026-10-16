@@ -1,6 +1,6 @@
 # Backend JS - Video Streaming Platform
 
-This project is a backend-first video streaming and social media platform built with Node.js, Express.js, and MongoDB. The API currently supports user authentication, video management, playlists, and tweet functionality, with a backend foundation for likes, subscriptions, and community features.
+This project is a backend-first video streaming and social media platform built with Node.js, Express.js, and MongoDB. The API supports user authentication, video management, playlists, tweets, comments, and likes.
 
 ## Tech Stack
 
@@ -18,7 +18,6 @@ This project is a backend-first video streaming and social media platform built 
 - Active backend development
 - Core API modules implemented
 - Frontend not yet added
-- Some advanced social features are still being developed
 
 ## Features Implemented
 
@@ -61,12 +60,16 @@ This project is a backend-first video streaming and social media platform built 
 - Update tweet
 - Delete tweet
 
-### Social Features in Progress
+### Comments and Likes
 
-- Like controller for videos, comments, and tweets
-- Comment tracking
-- Subscription management models
-- Additional social platform functionality
+- Get comments for a video
+- Add, edit, and delete comments
+- Toggle likes on videos, comments, and tweets
+- Get the authenticated user's liked videos
+
+### Other Social Features
+
+- Subscription model is present; subscription API routes are not yet implemented
 
 ## Project Structure
 
@@ -78,6 +81,7 @@ This project is a backend-first video streaming and social media platform built 
 │       ├── index.js
 │       ├── constants.js
 │       ├── controllers/
+│       │   ├── comment.controller.js
 │       │   ├── like.controller.js
 │       │   ├── playlist.controller.js
 │       │   ├── tweet.controller.js
@@ -97,6 +101,8 @@ This project is a backend-first video streaming and social media platform built 
 │       │   ├── user.model.js
 │       │   └── video.model.js
 │       ├── routes/
+│       │   ├── comment.route.js
+│       │   ├── like.routes.js
 │       │   ├── playlist.routes.js
 │       │   ├── tweet.routes.js
 │       │   ├── user.routes.js
@@ -164,6 +170,26 @@ GET /api/v1/tweets/user/:userId
 PATCH /api/v1/tweets/:tweetId
 DELETE /api/v1/tweets/:tweetId
 ```
+
+### Comment Routes
+
+```text
+GET /api/v1/comment/:videoId
+POST /api/v1/comment/add/:videoId
+PATCH /api/v1/comment/edit/:commentId
+DELETE /api/v1/comment/delete/:commentId
+```
+
+### Like Routes
+
+```text
+POST /api/v1/like/video/:videoId
+POST /api/v1/like/comment/:commentId
+POST /api/v1/like/tweet/:tweetId
+GET /api/v1/like/liked-videos
+```
+
+All comment and like routes require authentication. Like POST endpoints toggle the current user's like on or off.
 
 ## Environment Variables
 
